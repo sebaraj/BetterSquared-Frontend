@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import SignupSuccessPage from './pages/SignupSuccessPage';
+import MyGroupsPage from './pages/MyGroupsPage';
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/signup-success" element={<SignupSuccessPage />} />
+        <Route path="/my-groups" element={<MyGroupsPage />} />
         <Route path="/" element={<LoginPage />} />
       </Routes>
     </Router>

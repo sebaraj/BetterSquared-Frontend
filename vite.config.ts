@@ -6,6 +6,10 @@ import react from '@vitejs/plugin-react-swc'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    host: 'bettersquared.com', // Example: 'myapp.example.com'
+    port: 8080, // Example: 8080
+  },
   //server: {
   //  https: {
   //    key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
