@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createGroup } from '../api/groups';
-import { Group } from '../components/Group';
+import { Group } from '../interfaces/Group';
 import { useNavigate, Link } from 'react-router-dom';
 
 const CreateGroupPage: React.FC = () => {

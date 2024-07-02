@@ -5,5 +5,6 @@ export interface Group {
     end_date: string;
     is_active?: boolean;
     starting_cash: number;
+    created_at?: string;
   }
   

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { fetchGroups } from '../api/groups';
-import { Group } from '../components/Group';
+import { Group } from '../interfaces/Group';
 
 const MyGroupsPage: React.FC = () => {
   const [groups, setGroups] = useState<Group[]>([]);
@@ -39,6 +39,10 @@ const MyGroupsPage: React.FC = () => {
     navigate('/login');
   };
 
+  // sort by status
+  const filteredGroups = [...groups.filter(group => group.is_active), ...groups.filter(group => !group.is_active)];
+
+
   return (
     <div className="min-h-screen bg-gray-100 p-4">
         <div className="flex justify-between items-center mb-4">
@@ -52,17 +56,18 @@ const MyGroupsPage: React.FC = () => {
         </div>
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16"> {/* Adjusted bottom margin */}
-        {groups.map(group => (
+        {filteredGroups.map(group => (
           <div
             key={group.group_name}
             className="bg-white p-4 rounded shadow cursor-pointer hover:bg-gray-200 border border-gray-300" // Added border for gray outline
             onClick={() => handleGroupClick(group.group_name)}
           >
+            <Link to={`/group/${group.group_name}`}></Link>
             <h2 className="text-xl font-semibold">{group.group_name}</h2>
-            <p>Current Cash: {group.current_cash}</p>
-            <p>Starting Cash: {group.starting_cash}</p>
-            <p>Start Date: {group.start_date}</p>
-            <p>End Date: {group.end_date}</p>
+            <p>Current Cash: {group.current_cash ? group.current_cash.toFixed(2) : 0}</p>
+            <p>Starting Cash: {group.starting_cash.toFixed(2)}</p>
+            <p>Start Date: {new Date(group.start_date).toLocaleDateString()}</p>
+            <p>End Date: {new Date(group.end_date).toLocaleDateString()}</p>
             <p>Status: {group.is_active ? 'Active' : 'Inactive'}</p>
           </div>
         ))}
