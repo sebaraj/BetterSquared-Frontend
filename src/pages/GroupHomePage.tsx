@@ -1,7 +1,7 @@
 // GroupHomePage.tsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchGroup, fetchGroupUsers, fetchUserGroupDetails } from '../api/groups'; 
+import { fetchGroup, fetchGroupUsers, fetchUserGroupDetails, handleGroupAction } from '../api/groups'; 
 import { Group } from '../interfaces/Group'; 
 import { User } from '../interfaces/User'; 
 import { UserGroupDetails } from '../interfaces/UserGroupDetails';
@@ -36,11 +36,13 @@ const GroupHomePage: React.FC = () => {
               const userDetailsData = await fetchUserGroupDetails(group_name, username);
               setUserDetails(userDetailsData[0]); // Assuming the first element is user details
             } catch (err) {
-              if ((err as Error).message === 'Forbidden') {
-                setUserDetails(null); // Do not display component on 403
-              } else {
-                setError((err as Error).message);
-              }
+              setUserDetails({
+                username: username, 
+                group_name: group_name,
+                group_role: "null",
+                current_cash: 0 
+              });
+              
             }
           }
         } catch (err) {
@@ -56,6 +58,25 @@ const GroupHomePage: React.FC = () => {
     console.log(group_name);
     getGroupDetails();
   }, [group_name, username]);
+
+ 
+  const confirmAction = (actionType: string) => {
+    if (group_name) {
+    handleGroupAction(group_name, actionType)
+      .then(() => {
+        if (actionType == 'delete' || actionType == 'leave') {
+          navigate('/my-groups');
+        } else {
+          window.location.reload();
+        }
+        
+      })
+      .catch(error => {
+        console.error('Error handling group action:', error);
+        setError('Failed to perform action');  // Show error message to the user
+      });
+    }
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -90,13 +111,25 @@ const GroupHomePage: React.FC = () => {
               <p className="font-semibold">Is Active</p>
               <p className="text-lg">{group.is_active ? 'Yes' : 'No'}</p>
             </div>
+            {userDetails && (
+              <div className="p-4 bg-gray-100 rounded-lg">
+                <p className="font-semibold">Group Role</p>
+                <p className="text-lg">{userDetails.group_role}</p>
+              </div>
+            )}
+            {userDetails && (
+              <div className="p-4 bg-gray-100 rounded-lg">
+                <p className="font-semibold">Current Cash</p>
+                <p className="text-lg">${userDetails.current_cash.toFixed(2)}</p>
+              </div>
+            )}
           </div>
           
         </div>
     
       )}
       <div >
-      {userDetails && <UserGroupDetailsComponent details={userDetails} />}
+      {userDetails && <UserGroupDetailsComponent details={userDetails} handleGroupAction={confirmAction} />}
 
       <Leaderboard users={users} group_name={group_name ? group_name : ""}/>
       </div>

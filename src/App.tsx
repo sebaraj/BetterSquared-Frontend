@@ -8,6 +8,7 @@ import MyGroupsPage from './pages/MyGroupsPage';
 import CreateGroupPage from './pages/CreateGroupPage';
 import GroupHomePage from './pages/GroupHomePage';
 import UserAccountPage from './pages/UserAccountPage';
+import JoinGroupPage from './pages/JoinGroupPage';
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const App: React.FC = () => {
         <Route path="/create-group" element={<CreateGroupPage />} />
         <Route path="/group/:group_name" element={<GroupHomePage />} />
         <Route path="/group/:group_name/user/:username" element={<UserAccountPage />} />
+        <Route path="/join-group" element={<JoinGroupPage />} />
         <Route path="/" element={<LoginPage />} />
       </Routes>
     </Router>

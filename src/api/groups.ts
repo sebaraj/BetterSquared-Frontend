@@ -73,3 +73,31 @@ export const createGroup = async (newGroup: Group): Promise<Group> => {
       }
     }
   };
+
+  export const handleGroupAction = async (group_name: string, action: string): Promise<void> => {
+    let endpoint = `/group/${group_name}`;
+    if (action === 'delete') {
+      await axiosInstance.delete(endpoint);
+    } else if (action === 'leave') {
+      endpoint += '/leave';
+      await axiosInstance.delete(endpoint);
+    } else if (action === 'join') {
+      endpoint += '/join';
+      await axiosInstance.post(endpoint);
+    }
+  };
+
+  export const searchGroups = async (page: number, name: string) => {
+    try {
+      const response = await axiosInstance.get(`/groups/search`, {
+        params: { page, name }
+      });
+      return response.data;  // This should return groups based on the search criteria
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw new Error(error.response?.data.message || 'Failed to search groups');
+      } else {
+        throw new Error('Group search error');
+      }
+    }
+  };
