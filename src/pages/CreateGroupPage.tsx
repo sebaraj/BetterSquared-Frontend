@@ -6,7 +6,7 @@ import { useNavigate, Link } from 'react-router-dom';
 const CreateGroupPage: React.FC = () => {
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>(''); // Add error message state
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [viewGroupLink, setViewGroupLink] = useState<string | null>(null);
 
   const [group, setGroup] = useState<Group>({
@@ -26,7 +26,7 @@ const CreateGroupPage: React.FC = () => {
 
     } catch (error) {
       console.error('Failed to create group:', error);
-      setErrorMessage('Failed to create group. Please try again.'); // Set error message
+      setErrorMessage('Failed to create group. Please try again.');
 
     }
   };

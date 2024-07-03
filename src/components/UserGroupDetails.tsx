@@ -35,6 +35,10 @@ const UserGroupDetailsComponent: React.FC<UserGroupDetailsProps> = ({ details, h
     navigate(`/group/${details.group_name}/users`, { state: { showAdminControls: isAdmin } });
   };
 
+  const goToEditGroupPage = () => {
+    navigate(`/group/edit/${details.group_name}`)
+  }
+
   return (
     <div className="flex flex-row justify-evenly items-center bg-gray-100 p-4 rounded-lg shadow">
       <h3 className="text-lg font-bold"></h3>
@@ -52,7 +56,7 @@ const UserGroupDetailsComponent: React.FC<UserGroupDetailsProps> = ({ details, h
       )}
       {["Group Creator", "Group Administrator"].includes(details.group_role) && (
         <button className="bg-yellow-500 text-white px-4 py-2 rounded shadow hover:bg-yellow-600"
-          onClick={() => window.location.href = `/edit-group/${details.group_name}`}>Edit Group</button>
+          onClick={goToEditGroupPage}>Edit Group</button>
       )}
       <button className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
         onClick={goToUsersPage}>See All Users{details.group_role === 'Group Leader' ? '/Make Admin' : ''}

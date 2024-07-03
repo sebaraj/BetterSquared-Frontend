@@ -44,6 +44,19 @@ export const createGroup = async (newGroup: Group): Promise<Group> => {
     }
   }
 
+  export const updateGroup = async (group_name: string, groupData: Group) => {
+    try {
+      const response = await axiosInstance.put(`/group/${group_name}`, groupData);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        throw error.response.data.message || 'Failed to update groups';
+      } else {
+        throw 'Failed to update groups';
+      }
+    }
+  };
+
   export const fetchGroupUsers = async (group_name: string, page: number): Promise<User[]> => {
     try {
       const response = await axiosInstance.get(`/group/${group_name}/users`, { params: { page } });

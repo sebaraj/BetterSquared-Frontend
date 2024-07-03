@@ -81,9 +81,12 @@ const GroupHomePage: React.FC = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  const handleGoToMyGroups = () => {
-    navigate('/my-groups');
+  const handleNavigate = (path: string) => {
+    navigate(path);
   };
+
+  const today = new Date();
+  const startDate = new Date(group?.start_date || today);
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -133,16 +136,42 @@ const GroupHomePage: React.FC = () => {
 
       <Leaderboard users={users} group_name={group_name ? group_name : ""} showAdminControls={false} />
       </div>
-      
-
+      <div className="fixed bottom-4 right-4 flex space-x-2">
+        {group && group.is_active && (
+          <>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => handleNavigate(`/group/${group_name}/active-bets`)}
+            >
+              Active Bets
+            </button>
+            <button
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => handleNavigate(`/group/${group_name}/place-bet`)}
+            >
+              Place Bet
+            </button>
+          </>
+        )}
+        {group && startDate <= today && (
+          <button
+            className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => handleNavigate(`/group/${group_name}/settled-bets`)}
+          >
+            Settled Bets
+          </button>
+        )}
+      </div>
+  
 
         <button
           className="fixed bottom-4 left-4 bg-gray-800 text-white px-4 py-2 rounded shadow-lg"
-          onClick={handleGoToMyGroups}
+          onClick={() => handleNavigate('/my-groups')}
         >
           My Groups
         </button> 
     </div>
+      
   );
 };
 
