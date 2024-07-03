@@ -131,7 +131,7 @@ const GroupHomePage: React.FC = () => {
       <div >
       {userDetails && <UserGroupDetailsComponent details={userDetails} handleGroupAction={confirmAction} />}
 
-      <Leaderboard users={users} group_name={group_name ? group_name : ""}/>
+      <Leaderboard users={users} group_name={group_name ? group_name : ""} showAdminControls={false} />
       </div>
       
 

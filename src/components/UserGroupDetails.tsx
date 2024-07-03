@@ -1,7 +1,8 @@
 import React from 'react';
 import { UserGroupDetails } from '../interfaces/UserGroupDetails';
 import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import CSS
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
+import { useNavigate } from 'react-router-dom';
 
 interface UserGroupDetailsProps {
   details: UserGroupDetails;
@@ -11,6 +12,7 @@ interface UserGroupDetailsProps {
 const UserGroupDetailsComponent: React.FC<UserGroupDetailsProps> = ({ details, handleGroupAction }) => {
   if (!details) return null;
 
+  const navigate = useNavigate();
   const showConfirmDialog = (action: string, message: string) => {
     confirmAlert({
       title: 'Confirm to submit',
@@ -28,25 +30,33 @@ const UserGroupDetailsComponent: React.FC<UserGroupDetailsProps> = ({ details, h
     });
   };
 
+  const goToUsersPage = () => {
+    const isAdmin = details.group_role === 'Group Creator';
+    navigate(`/group/${details.group_name}/users`, { state: { showAdminControls: isAdmin } });
+  };
+
   return (
-    <div className="p-4 bg-gray-100 rounded-lg shadow">
+    <div className="flex flex-row justify-evenly items-center bg-gray-100 p-4 rounded-lg shadow">
       <h3 className="text-lg font-bold"></h3>
       {details.group_role === "Group Creator" && (
-        <button className="bg-red-500 text-white px-4 py-2 rounded shadow"
+        <button className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600"
           onClick={() => showConfirmDialog('delete', 'delete the group')}>Delete Group</button>
       )}
       {details.group_role !== "Group Creator" && details.group_role !== "null" && (
-        <button className="bg-blue-500 text-white px-4 py-2 rounded shadow"
+        <button className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
           onClick={() => showConfirmDialog('leave', 'leave the group')}>Leave Group</button>
       )}
       {details.group_role == "null" && (
-        <button className="bg-green-500 text-white px-4 py-2 rounded shadow"
+        <button className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600"
           onClick={() => showConfirmDialog('join', 'join the group')}>Join Group</button>
       )}
       {["Group Creator", "Group Administrator"].includes(details.group_role) && (
-        <button className="ml-4 bg-yellow-500 text-white px-4 py-2 rounded shadow"
+        <button className="bg-yellow-500 text-white px-4 py-2 rounded shadow hover:bg-yellow-600"
           onClick={() => window.location.href = `/edit-group/${details.group_name}`}>Edit Group</button>
       )}
+      <button className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
+        onClick={goToUsersPage}>See All Users{details.group_role === 'Group Leader' ? '/Make Admin' : ''}
+      </button>
     </div>
   );
 };

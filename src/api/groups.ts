@@ -101,3 +101,18 @@ export const createGroup = async (newGroup: Group): Promise<Group> => {
       }
     }
   };
+
+  export const handleRoleChange = async (group_name: string, username: string, currentRole: string) => {
+    const newRole = currentRole === 'Group Administrator' ? 3 : 2; // Assume 3 is for Member, 2 for Admin
+    try {
+        await axiosInstance.put(`/group/${group_name}/admin`, {
+            admin: username,
+            role: newRole
+        });
+        console.log(`Role changed to ${newRole === 2 ? 'Admin' : 'Member'} for ${username}`);
+        return true;
+    } catch (error) {
+        console.error('Failed to update user role:', error);
+        return false; 
+  }
+};
