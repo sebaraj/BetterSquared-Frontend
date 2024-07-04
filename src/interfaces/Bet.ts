@@ -1,14 +1,15 @@
 export interface BetGame {
-    betId: number;
+    bet_id: number;
     type: string;
-    groupName: string;
+    group_name: string;
     username: string;
     wagered: number;
-    amountToWin: number;
-    pickedWinner: string;
-    timePlaced: string;
-    beenDistributed: boolean;
-    isParlay: boolean;
+    amount_to_win: number;
+    picked_winner: string;
+    time_placed: string;
+    been_distributed: boolean;
+    is_parlay: boolean;
+    game_id: number;
     team1: string;
     odds1: number;
     line1: number | null;
@@ -17,24 +18,24 @@ export interface BetGame {
     odds2: number;
     line2: number | null;
     score2: number | null;
-    lastUpdate: string;
-    gameStartTime: string;
+    last_update: string;
+    game_start_time: string;
     status: string;
     winner: string | null;
     league: string;
 }
 
 export interface Bet {
-    gameId: number,
+    game_id: number,
     type: string;
-    groupName?: string;
+    group_name?: string;
     username?: string;
     wagered: number;
-    amountToWin?: number;
-    pickedWinner: string;
-    timePlaced?: string;
-    beenDistributed?: boolean;
-    isParlay?: boolean;
+    amount_to_win?: number;
+    picked_winner: string;
+    time_placed?: string;
+    been_distributed?: boolean;
+    is_paylay?: boolean;
 }
   
   

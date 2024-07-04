@@ -1,5 +1,5 @@
 export interface Game {
-    gameId: number;
+    game_id: number;
     team1: string;
     odds1: number;
     line1: number | null;
@@ -9,8 +9,8 @@ export interface Game {
     line2: number | null;
     score2: number | null;
     apiId: string;
-    lastUpdate: string;
-    gameStartTime: string;
+    last_update: string;
+    game_start_time: string;
     status: string;
     winner: string | null;
     league: string;
