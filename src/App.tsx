@@ -11,6 +11,9 @@ import UserAccountPage from './pages/UserAccountPage';
 import JoinGroupPage from './pages/JoinGroupPage';
 import GroupUsersPage from './pages/GroupUsersPage';
 import EditGroupPage from './pages/EditGroupPage';
+import BetsPage from './pages/BetsPage';
+import LeaguesPage from './pages/SelectLeaguePage';
+import GamesPage from './pages/GamesPage';
 
 const App: React.FC = () => {
   return (
@@ -27,6 +30,11 @@ const App: React.FC = () => {
         <Route path="/join-group" element={<JoinGroupPage />} />
         <Route path="/group/:group_name/users" element={<GroupUsersPage />} />
         <Route path="/group/edit/:group_name" element={<EditGroupPage />} />
+        <Route path="/group/:group_name/active" element={<BetsPage isActive={true} />} />
+        <Route path="/group/:group_name/settled" element={<BetsPage isActive={false} />} />
+        <Route path="/group/:group_name/leagues" element={<LeaguesPage />} />
+        <Route path="/bet/:group_name/league/:league_name" element={<GamesPage />} />
+        
         <Route path="/" element={<LoginPage />} />
       </Routes>
     </Router>

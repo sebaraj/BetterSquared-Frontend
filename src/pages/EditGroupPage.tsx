@@ -45,7 +45,7 @@ const EditGroupPage: React.FC = () => {
   };
   
   const handleGoBack = () => {
-    navigate('/my-groups');
+    navigate(`/group/${group_name}`);
   };
 
   const today = new Date();

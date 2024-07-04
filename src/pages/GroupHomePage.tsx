@@ -28,6 +28,7 @@ const GroupHomePage: React.FC = () => {
       if (group_name) {
         try {
           const fetchedGroup = await fetchGroup(group_name);
+          console.log(fetchedGroup);
           setGroup(fetchedGroup);
           const fetchedUsers = await fetchGroupUsers(group_name, 0);
           setUsers(fetchedUsers.slice(0,10));
@@ -141,13 +142,13 @@ const GroupHomePage: React.FC = () => {
           <>
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => handleNavigate(`/group/${group_name}/active-bets`)}
+              onClick={() => handleNavigate(`/group/${group_name}/active`)}
             >
               Active Bets
             </button>
             <button
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => handleNavigate(`/group/${group_name}/place-bet`)}
+              onClick={() => handleNavigate(`/group/${group_name}/leagues`)}
             >
               Place Bet
             </button>
@@ -156,7 +157,7 @@ const GroupHomePage: React.FC = () => {
         {group && startDate <= today && (
           <button
             className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => handleNavigate(`/group/${group_name}/settled-bets`)}
+            onClick={() => handleNavigate(`/group/${group_name}/settled`)}
           >
             Settled Bets
           </button>
