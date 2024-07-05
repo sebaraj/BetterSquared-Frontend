@@ -1,7 +1,12 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost', // Update with your base URL
+  //baseURL: 'http://localhost', // Update with your base URL
+  baseURL: 'https://better2.com',
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 axiosInstance.interceptors.request.use((config) => {

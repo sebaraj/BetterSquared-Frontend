@@ -23,8 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-tls.crt
-tls.key
-cert.pem
-csr.pem
-key.pem
+bettersquared.crt
+bettersquared.key
+

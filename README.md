@@ -27,3 +27,11 @@ If you are developing a production application, we recommend updating the config
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+
+Access at: https://bettersquared.com:8080/
+
+Cert:
+- /etc/hosts 127.0.0.1 bettersquared.com
+- `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout bettersquared.key -out bettersquared.crt -subj "/CN=bettersquared.com"`
+- `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain bettersquared.crt`
