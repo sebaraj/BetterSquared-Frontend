@@ -3,6 +3,7 @@ import { createGroup } from '../api/groups';
 import { Group } from '../interfaces/Group';
 import { useNavigate, Link } from 'react-router-dom';
 
+
 const CreateGroupPage: React.FC = () => {
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState<string>('');
@@ -19,15 +20,19 @@ const CreateGroupPage: React.FC = () => {
   const handleCreateGroup = async () => {
     try {
       setErrorMessage('');
-      const createdGroup = await createGroup(group);
+      const groupWithLocalISO = {
+        ...group,
+        start_date: new Date(group.start_date).toISOString(),
+        end_date: new Date(group.end_date).toISOString(),
+      };
+
+      const createdGroup = await createGroup(groupWithLocalISO);
       setSuccessMessage('Successfully created group!');
       setViewGroupLink(`/group/${group.group_name}`);
       console.log('Group created successfully:', createdGroup);
-
     } catch (error) {
       console.error('Failed to create group:', error);
       setErrorMessage('Failed to create group. Please try again.');
-
     }
   };
 
@@ -54,11 +59,11 @@ const CreateGroupPage: React.FC = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="start_date" className="block text-gray-700 font-bold mb-2">Start Date</label>
-            <input type="date" id="start_date" name="start_date" value={group.start_date} onChange={handleChange} required className="border-gray-300 border w-full px-3 py-2 rounded-md focus:outline-none focus:border-blue-500" />
+            <input type="datetime-local" id="start_date" name="start_date" value={group.start_date} onChange={handleChange} required className="border-gray-300 border w-full px-3 py-2 rounded-md focus:outline-none focus:border-blue-500" />
           </div>
           <div className="mb-4">
             <label htmlFor="end_date" className="block text-gray-700 font-bold mb-2">End Date</label>
-            <input type="date" id="end_date" name="end_date" value={group.end_date} onChange={handleChange} required className="border-gray-300 border w-full px-3 py-2 rounded-md focus:outline-none focus:border-blue-500" />
+            <input type="datetime-local" id="end_date" name="end_date" value={group.end_date} onChange={handleChange} required className="border-gray-300 border w-full px-3 py-2 rounded-md focus:outline-none focus:border-blue-500" />
           </div>
           <div className="mb-4">
             <label htmlFor="starting_cash" className="block text-gray-700 font-bold mb-2">Starting Cash</label>

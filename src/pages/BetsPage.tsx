@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchBets, sellBet } from '../api/bets';
 import { BetGame } from '../interfaces/Bet';
+import { GetLocalTimeString } from '../interfaces/Time';
 
 interface BetsPageProps {
   isActive: boolean;  // Determines whether to show active or settled bets
@@ -66,21 +67,20 @@ const handleGoBack = () => {
             <p><strong>Wagered:</strong> ${bet.wagered.toFixed(2)}</p>
             <p><strong>To Win:</strong> ${bet.amount_to_win.toFixed(2)}</p>
             <p><strong>Picked Winner:</strong> {bet.picked_winner}</p>
-            <p><strong>Placed:</strong> {new Date(bet.time_placed).toLocaleString()}</p>
+            <p><strong>Placed:</strong> {GetLocalTimeString(bet.time_placed)}</p>
             <p><strong>Teams:</strong> {bet.team1} vs {bet.team2}</p>
             <p><strong>Odds:</strong> {bet.odds1.toFixed(2)} vs {bet.odds2.toFixed(2)}</p>
             {bet.line1 !== 0 && <p><strong>Line 1:</strong> {bet.line1}</p>}
             {bet.line2 !== 0 && <p><strong>Line 2:</strong> {bet.line2}</p>}
             {bet.score1 !== 0 && <p><strong>Score 1:</strong> {bet.score1}</p>}
             {bet.score2 !== 0 && <p><strong>Score 2:</strong> {bet.score2}</p>}
-            <p><strong>Game Starts:</strong> {new Date(bet.game_start_time).toLocaleString()}</p>
-            <p><strong>Last Updated:</strong> {new Date(bet.last_update).toLocaleString()}</p>
+            <p><strong>Game Starts:</strong> {GetLocalTimeString(bet.game_start_time)}</p>
+            <p><strong>Last Updated:</strong> {GetLocalTimeString(bet.last_update)}</p>
             <p><strong>League:</strong> {bet.league}</p>
             {bet.winner && <p><strong>Winner:</strong> {bet.winner}</p>}
           </div>
         ))}
       </div>
-
       <div className="flex justify-between mt-4">
         <button onClick={() => setPage(Math.max(0, page - 1))} className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Previous</button>
         <button onClick={() => setPage(page + 1)} className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Next</button>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserGroupDetails, AccountBet } from '../interfaces/UserGroupDetails';
 import { fetchUserGroupDetails } from '../api/groups';
+import { GetLocalTimeString } from '../interfaces/Time';
 
 const UserAccountPage: React.FC = () => {
   const navigate = useNavigate();
@@ -61,13 +62,13 @@ const UserAccountPage: React.FC = () => {
                 <p>Wagered: ${bet.wagered.toFixed(2)}</p>
                 <p>Amount to Win: ${bet.amount_to_win.toFixed(2)}</p>
                 <p>Picked Winner: {bet.picked_winner}</p>
-                <p>Time Placed: {bet.time_placed}</p>
+                <p>Time Placed: {GetLocalTimeString(bet.time_placed)}</p>
                 <p>Been Distributed: {bet.been_distributed ? 'Yes' : 'No'}</p>
                 <p>Is Parlay: {bet.is_parlay ? 'Yes' : 'No'}</p>
                 <p>Team 1: {bet.team1} - Odds: {bet.odds1}, Line: {bet.line1}</p>
                 <p>Team 2: {bet.team2} - Odds: {bet.odds2}, Line: {bet.line2}</p>
                 <p>Last Update: {bet.last_update}</p>
-                <p>Game Start Time: {bet.game_start_time}</p>
+                <p>Game Start Time: {GetLocalTimeString(bet.game_start_time)}</p>
                 <p>Status: {bet.status}</p>
                 <p>League: {bet.league}</p>
                 {bet.winner && <p>Winner: {bet.winner}</p>}

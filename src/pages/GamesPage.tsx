@@ -5,6 +5,8 @@ import { Game } from '../interfaces/Game';
 import BettingModal from '../components/BettingModal';
 import { makeBet } from '../api/bets';
 import { Bet } from '../interfaces/Bet'
+import { GetLocalTimeString } from '../interfaces/Time';
+
 
 const GamesPage: React.FC = () => {
   const { group_name, league_name } = useParams<{ group_name: string, league_name: string }>();
@@ -116,8 +118,8 @@ const handleBet = (amount: number) => {
                 )}
               </div>
             </div>
-            <p><strong>Game Start:</strong> {new Date(game.game_start_time).toLocaleString()}</p>
-            <p><strong>Last Updated:</strong> {new Date(game.last_update).toLocaleString()}</p>
+            <p><strong>Game Start:</strong> {GetLocalTimeString(new Date(game.game_start_time).toLocaleString())}</p>
+            <p><strong>Last Updated:</strong> {GetLocalTimeString(new Date(game.last_update).toLocaleString())}</p>
               
           </div>
           

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { searchGroups } from '../api/groups';
 import { Group } from '../interfaces/Group';
+import { GetLocalTimeString } from '../interfaces/Time';
 
 const JoinGroupPage: React.FC = () => {
     const [groups, setGroups] = useState<Group[]>([]);
@@ -67,8 +68,8 @@ const handleGoToMyGroups = () => {
         {groups.map((group, index) => (
           <Link key={index} to={`/group/${group.group_name}`} className="bg-white p-4 rounded shadow cursor-pointer hover:bg-gray-200 border border-gray-300">
             <h2 className="text-xl font-semibold">{group.group_name}</h2>
-            <p>{group.start_date}</p>
-            <p>{group.end_date}</p>
+            <p>{GetLocalTimeString(group.start_date)}</p>
+            <p>{GetLocalTimeString(group.end_date)}</p>
             <p>{group.starting_cash}</p> 
           </Link>
         ))}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { fetchGroups } from '../api/groups';
 import { Group } from '../interfaces/Group';
+import { GetLocalTimeString } from '../interfaces/Time';
 
 const MyGroupsPage: React.FC = () => {
   const [groups, setGroups] = useState<Group[]>([]);
@@ -66,8 +67,8 @@ const MyGroupsPage: React.FC = () => {
             <h2 className="text-xl font-semibold">{group.group_name}</h2>
             <p>Current Cash: {group.current_cash ? group.current_cash.toFixed(2) : 0}</p>
             <p>Starting Cash: {group.starting_cash.toFixed(2)}</p>
-            <p>Start Date: {new Date(group.start_date).toLocaleDateString()}</p>
-            <p>End Date: {new Date(group.end_date).toLocaleDateString()}</p>
+            <p>Start Date: {GetLocalTimeString(new Date(group.start_date).toLocaleString())}</p>
+            <p>End Date: {GetLocalTimeString(new Date(group.end_date).toLocaleString())}</p>
             <p>Status: {group.is_active ? 'Active' : 'Inactive'}</p>
           </div>
         ))}

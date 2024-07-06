@@ -7,7 +7,7 @@ import { User } from '../interfaces/User';
 import { UserGroupDetails } from '../interfaces/UserGroupDetails';
 import Leaderboard from '../components/Leaderboard'; 
 import UserGroupDetailsComponent from '../components/UserGroupDetails';
-
+import { GetLocalTimeString } from '../interfaces/Time';
 
 interface RouteParams extends Record<string, string | undefined> {
   group_name: string;
@@ -100,16 +100,16 @@ const GroupHomePage: React.FC = () => {
               <p className="text-lg">${group.starting_cash.toFixed(2)}</p>
             </div>
             <div className="p-4 bg-gray-100 rounded-lg">
-              <p className="font-semibold">Start Date</p>
-              <p className="text-lg">{new Date(group.start_date).toLocaleDateString()}</p>
+              <p className="font-semibold">Start Time</p>
+              <p className="text-lg">{GetLocalTimeString(new Date(group.start_date).toLocaleString())}</p>
             </div>
             <div className="p-4 bg-gray-100 rounded-lg">
-              <p className="font-semibold">End Date</p>
-              <p className="text-lg">{new Date(group.end_date).toLocaleDateString()}</p>
+              <p className="font-semibold">End Time</p>
+              <p className="text-lg">{GetLocalTimeString(new Date(group.end_date).toLocaleString())}</p>
             </div>
             <div className="p-4 bg-gray-100 rounded-lg">
               <p className="font-semibold">Created At</p>
-              <p className="text-lg">{group.created_at ? new Date(group.created_at).toLocaleDateString() : 'N/A'}</p>
+              <p className="text-lg">{group.created_at ? GetLocalTimeString(new Date(group.created_at).toLocaleString()) : 'N/A'}</p>
             </div>
             <div className="p-4 bg-gray-100 rounded-lg">
               <p className="font-semibold">Is Active</p>

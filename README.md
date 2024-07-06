@@ -34,4 +34,5 @@ Access at: https://bettersquared.com:8080/
 Cert:
 - /etc/hosts 127.0.0.1 bettersquared.com
 - `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout bettersquared.key -out bettersquared.crt -subj "/CN=bettersquared.com"`
+- add cert to browser trusted certs
 - `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain bettersquared.crt`
