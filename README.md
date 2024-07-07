@@ -1,38 +1,41 @@
-# Front-end/client application for https://github.com/sebaraj/BetterSquared
+# BetterSquared Frontend
 
-## React + TypeScript + Vite
+This is the front-end, client application for [BetterSquared](https://github.com/sebaraj/BetterSquared), a group-based, simulated sports betting app. Written in Typescript, utilizing React, TailwindCSS, and Vite. 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup
 
-Currently, two official plugins are available:
+### Certificate
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+To set up the certificate for the client application:
 
-### Expanding the ESLint configuration
+- Modify `/etc/hosts` file to map `127.0.0.1` to `bettersquared.com`
+- Generate the SSL/TLS certificate: `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout bettersquared.key -out bettersquared.crt -subj "/CN=bettersquared.com"`
+- Run `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain bettersquared.crt`
+- Add the certificate to your browser's trusted certificates by going to chrome://settings/security and under "Manage certificates", import bettersquared.crt and trust it.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Installation
 
-- Configure the top-level `parserOptions` property like this:
+- Clone the repository: `git clone https://github.com/sebaraj/BetterSquared-frontend`
+- In the root directory of this project:
+  - Install the dependencies: `npm install`
+  - Run the development server: `npm run dev`
+- Start the backend, [BetterSquared](https://github.com/sebaraj/BetterSquared)
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+## Access
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+The application can be accessed at: [https://bettersquared.com:8080/](https://bettersquared.com:8080/). 
 
+### Dependencies
 
-Access at: https://bettersquared.com:8080/
+- `@headlessui/react`
+- `@types/react-router-dom`
+- `axios`
+- `fs`
+- `headlessui`
+- `prop-types`
+- `react`
+- `react-confirm-alert`
+- `react-dom`
+- `react-router-dom`
+- `vite-plugin-proxy`
 
-Cert:
-- /etc/hosts 127.0.0.1 bettersquared.com
-- `openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout bettersquared.key -out bettersquared.crt -subj "/CN=bettersquared.com"`
-- add cert to browser trusted certs
-- `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain bettersquared.crt`

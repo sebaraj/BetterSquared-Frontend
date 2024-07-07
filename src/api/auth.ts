@@ -30,7 +30,7 @@ export const signup = async (username: string, email: string, password: string) 
 
 export const resetPassword = async (username: string) => {
   try {
-    const response = await axiosInstance.post(`/reset-password`, { username });
+    const response = await axiosInstance.post(`/forgotpassword`, { username });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

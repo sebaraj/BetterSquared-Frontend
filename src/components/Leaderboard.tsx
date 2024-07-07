@@ -8,9 +8,10 @@ interface LeaderboardProps {
   users: User[];
   group_name: string;
   showAdminControls: boolean;
+  showTitle: boolean;
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ users, group_name, showAdminControls }) => {
+const Leaderboard: React.FC<LeaderboardProps> = ({ users, group_name, showAdminControls, showTitle }) => {
   const [leaderboardUsers, setLeaderboardUsers] = useState<User[]>([]);
   
   useEffect(() => {
@@ -33,20 +34,20 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ users, group_name, showAdminC
     handleRoleChange(group_name, username, currentRole)
       .then(success => {
         if (!success) {
-          setLeaderboardUsers(users); // This reverts changes if the API call fails
+          setLeaderboardUsers(users);
         }
       })
       .catch(() => {
-        setLeaderboardUsers(users); // Revert changes on error
+        setLeaderboardUsers(users);
       });
   };
   
   return (
-    <div className="bg-white shadow-lg rounded-lg p-8 mt-4">
-      <h3 className="text-xl font-bold mb-4">Leaderboard</h3>
-      <table className="min-w-full bg-white">
+    <div className="bg-gray-800 shadow-lg rounded-lg p-8">
+      {showTitle && <h3 className="text-xl font-bold mb-4 text-white text-center">Leaderboard</h3>}
+      <table className="min-w-full bg-gray-800 text-white">
         <thead>
-          <tr>
+          <tr className="border-b border-gray-700">
             <th className="py-2">Username</th>
             <th className="py-2">Current Cash</th>
             <th className="py-2">Role</th>
@@ -55,15 +56,15 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ users, group_name, showAdminC
         </thead>
         <tbody>
           {leaderboardUsers.map((user, index) => (
-            <tr key={index} className="text-center">
+            <tr key={index} className="text-center border-b border-gray-700">
               <td className="px-6 py-2">
-                <Link to={`/group/${group_name}/user/${user.username}`} className="text-blue-500 hover:text-blue-700">
+                <Link to={`/group/${group_name}/user/${user.username}`} className="text-blue-400 hover:text-blue-600">
                   {user.username}
                 </Link>
               </td>
-              <td className="px-6 py-2">{user.current_cash.toFixed(2)}</td>
+              <td className="px-6 py-2">${user.current_cash.toFixed(2)}</td>
               <td className="px-6 py-2">{user.group_role}</td>
-              {showAdminControls && (
+              {showAdminControls && user.group_role !== 'Group Creator' && (
                 <td className="px-6 py-2">
                   <Switch
                     checked={user.group_role === 'Group Administrator'}

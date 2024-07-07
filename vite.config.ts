@@ -11,7 +11,7 @@ export default defineConfig({
       key: fs.readFileSync(path.resolve(__dirname, 'bettersquared.key')),
       cert: fs.readFileSync(path.resolve(__dirname, 'bettersquared.crt')),
     },
-    host: '0.0.0.0',
+    host: 'bettersquared.com',
     port: 8080,
   },
 })

@@ -6,7 +6,7 @@ import AuthForm from '../components/AuthForm';
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     if (token) {
@@ -33,21 +33,21 @@ const LoginPage: React.FC = () => {
     } catch (error) {
       console.error('Login failed:', error);
       setErrorMessage('Login failed. Please check your credentials and try again.');
-      // Handle login error, e.g., show error message
     }
   };
 
   return (
-    <div className="h-screen flex items-center justify-center">
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Login</h2>
+    <div className="h-screen bg-gray-900 text-white flex flex-col items-center justify-center">
+      <h1 className="text-4xl font-bold mb-6">better<sup>2</sup>.com</h1>
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
         <AuthForm type="login" onSubmit={handleLogin} />
         {errorMessage && (
           <div className="text-red-500 mt-2">{errorMessage}</div>
         )}
         <div className="flex justify-between mt-4">
-          <a href="/signup" className="text-blue-500">Sign Up</a>
-          <a href="/forgot-password" className="text-blue-500">Forgot Password?</a>
+          <a href="/signup" className="text-blue-500 hover:underline">Sign Up</a>
+          <a href="/forgot-password" className="text-blue-500 hover:underline">Forgot Password?</a>
         </div>
       </div>
     </div>

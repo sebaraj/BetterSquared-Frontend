@@ -17,7 +17,7 @@ export const fetchBets = async (group_name: string, isActive: boolean, page: num
     }
   };
 
-  export const makeBet = async (bet: Bet) => {
+export const makeBet = async (bet: Bet) => {
     const { game_id, type, wagered, picked_winner, group_name } = bet;
     try {
       const response = await axiosInstance.post(`/bet/${group_name}/buy`, {
@@ -36,7 +36,7 @@ export const fetchBets = async (group_name: string, isActive: boolean, page: num
     }
   };
 
-  export const sellBet = async (group_name: string, bet_id: number) => {
+export const sellBet = async (group_name: string, bet_id: number) => {
     try {
       const response = await axiosInstance.put(`/bet/${group_name}/sell`,{ bet_id } );
       return response.data;

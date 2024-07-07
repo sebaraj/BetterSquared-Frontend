@@ -2,7 +2,6 @@ import axiosInstance from './axiosInstance';
 import axios from 'axios';
 import { Group } from '../interfaces/Group';
 import { User } from '../interfaces/User';
-//import { group } from 'console';
 
 export const fetchGroups = async (): Promise<Group[]> => {
   try {
@@ -30,7 +29,7 @@ export const createGroup = async (newGroup: Group): Promise<Group> => {
     }
   };
 
-  export const fetchGroup = async (group_name: string): Promise<Group> => {
+export const fetchGroup = async (group_name: string): Promise<Group> => {
     try {
       const fetchGroupUrl = `/group/${group_name}`;
       const response = await axiosInstance.get(fetchGroupUrl);
@@ -44,7 +43,7 @@ export const createGroup = async (newGroup: Group): Promise<Group> => {
     }
   }
 
-  export const updateGroup = async (group_name: string, groupData: Group) => {
+export const updateGroup = async (group_name: string, groupData: Group) => {
     try {
       const response = await axiosInstance.put(`/group/${group_name}`, groupData);
       return response.data;
@@ -57,7 +56,7 @@ export const createGroup = async (newGroup: Group): Promise<Group> => {
     }
   };
 
-  export const fetchGroupUsers = async (group_name: string, page: number): Promise<User[]> => {
+export const fetchGroupUsers = async (group_name: string, page: number): Promise<User[]> => {
     try {
       const response = await axiosInstance.get(`/group/${group_name}/users`, { params: { page } });
       return response.data;
@@ -70,7 +69,7 @@ export const createGroup = async (newGroup: Group): Promise<Group> => {
     }
   };
 
-  export const fetchUserGroupDetails = async (group_name: string, username: string) => {
+export const fetchUserGroupDetails = async (group_name: string, username: string) => {
     try {
       const response = await axiosInstance.get(`/group/${group_name}/user/${username}`);
       console.log(response.data);
@@ -87,7 +86,7 @@ export const createGroup = async (newGroup: Group): Promise<Group> => {
     }
   };
 
-  export const handleGroupAction = async (group_name: string, action: string): Promise<void> => {
+export const handleGroupAction = async (group_name: string, action: string): Promise<void> => {
     let endpoint = `/group/${group_name}`;
     if (action === 'delete') {
       await axiosInstance.delete(endpoint);
@@ -105,7 +104,7 @@ export const createGroup = async (newGroup: Group): Promise<Group> => {
       const response = await axiosInstance.get(`/groups/search`, {
         params: { page, name }
       });
-      return response.data;  // This should return groups based on the search criteria
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         throw new Error(error.response?.data.message || 'Failed to search groups');
@@ -115,7 +114,7 @@ export const createGroup = async (newGroup: Group): Promise<Group> => {
     }
   };
 
-  export const handleRoleChange = async (group_name: string, username: string, currentRole: string) => {
+export const handleRoleChange = async (group_name: string, username: string, currentRole: string) => {
     const newRole = currentRole === 'Group Administrator' ? 3 : 2; // Assume 3 is for Member, 2 for Admin
     try {
         await axiosInstance.put(`/group/${group_name}/admin`, {

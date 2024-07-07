@@ -1,13 +1,14 @@
-// GroupHomePage.tsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchGroup, fetchGroupUsers, fetchUserGroupDetails, handleGroupAction } from '../api/groups'; 
-import { Group } from '../interfaces/Group'; 
-import { User } from '../interfaces/User'; 
+import { fetchGroup, fetchGroupUsers, fetchUserGroupDetails, handleGroupAction } from '../api/groups';
+import { Group } from '../interfaces/Group';
+import { User } from '../interfaces/User';
 import { UserGroupDetails } from '../interfaces/UserGroupDetails';
-import Leaderboard from '../components/Leaderboard'; 
+import Leaderboard from '../components/Leaderboard';
 import UserGroupDetailsComponent from '../components/UserGroupDetails';
-import { GetLocalTimeString } from '../interfaces/Time';
+import { GetLocalTimeString } from '../utils/Time';
+import { getStatusColor, getDateLabel } from '../utils/Time';
+import Loading from '../components/Loading';
 
 interface RouteParams extends Record<string, string | undefined> {
   group_name: string;
@@ -28,22 +29,20 @@ const GroupHomePage: React.FC = () => {
       if (group_name) {
         try {
           const fetchedGroup = await fetchGroup(group_name);
-          console.log(fetchedGroup);
           setGroup(fetchedGroup);
           const fetchedUsers = await fetchGroupUsers(group_name, 0);
-          setUsers(fetchedUsers.slice(0,10));
+          setUsers(fetchedUsers.slice(0, 10));
           if (username) {
             try {
               const userDetailsData = await fetchUserGroupDetails(group_name, username);
               setUserDetails(userDetailsData[0]); // Assuming the first element is user details
             } catch (err) {
               setUserDetails({
-                username: username, 
+                username: username,
                 group_name: group_name,
                 group_role: "null",
-                current_cash: 0 
+                current_cash: 0
               });
-              
             }
           }
         } catch (err) {
@@ -56,31 +55,28 @@ const GroupHomePage: React.FC = () => {
         setLoading(false);
       }
     };
-    console.log(group_name);
     getGroupDetails();
   }, [group_name, username]);
 
- 
   const confirmAction = (actionType: string) => {
     if (group_name) {
-    handleGroupAction(group_name, actionType)
-      .then(() => {
-        if (actionType == 'delete' || actionType == 'leave') {
-          navigate('/my-groups');
-        } else {
-          window.location.reload();
-        }
-        
-      })
-      .catch(error => {
-        console.error('Error handling group action:', error);
-        setError('Failed to perform action');  // Show error message to the user
-      });
+      handleGroupAction(group_name, actionType)
+        .then(() => {
+          if (actionType === 'delete' || actionType === 'leave') {
+            navigate('/my-groups');
+          } else {
+            window.location.reload();
+          }
+        })
+        .catch(error => {
+          console.error('Error handling group action:', error);
+          setError('Failed to perform action');  // Show error message to the user
+        });
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <Loading />;
+  if (error) return <div className="text-center text-red-500">Error: {error}</div>;
 
   const handleNavigate = (path: string) => {
     navigate(path);
@@ -90,64 +86,47 @@ const GroupHomePage: React.FC = () => {
   const startDate = new Date(group?.start_date || today);
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="min-h-screen bg-gray-900 text-white p-6 flex flex-col items-center">
       {group && (
-        <div className="bg-white shadow-lg rounded-lg p-8">
-          <h2 className="text-2xl font-bold mb-4">{group.group_name}</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <p className="font-semibold">Starting Cash</p>
-              <p className="text-lg">${group.starting_cash.toFixed(2)}</p>
+        <div className="relative bg-gray-800 shadow-lg rounded-lg p-8 mb-4 w-full max-w-4xl">
+          <h2 className="text-2xl font-bold mb-6 text-center">{group.group_name}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="text-lg space-y-2">
+              <p>{getDateLabel(new Date(group.start_date), true)}</p>
+              <p>{getDateLabel(new Date(group.end_date), false)}</p>
+              <p>Created: {group.created_at ? GetLocalTimeString(new Date(group.created_at).toLocaleString()) : 'N/A'}</p>
             </div>
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <p className="font-semibold">Start Time</p>
-              <p className="text-lg">{GetLocalTimeString(new Date(group.start_date).toLocaleString())}</p>
+            <div className="text-lg text-right space-y-2">
+              {userDetails && userDetails.group_role !== "null" && (
+                <>
+                  <p>Role: {userDetails.group_role.charAt(0).toUpperCase() + userDetails.group_role.slice(1)}</p>
+                  <p>Current Cash: ${userDetails.current_cash.toFixed(2)}</p>
+                </>
+              )}
             </div>
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <p className="font-semibold">End Time</p>
-              <p className="text-lg">{GetLocalTimeString(new Date(group.end_date).toLocaleString())}</p>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <p className="font-semibold">Created At</p>
-              <p className="text-lg">{group.created_at ? GetLocalTimeString(new Date(group.created_at).toLocaleString()) : 'N/A'}</p>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <p className="font-semibold">Is Active</p>
-              <p className="text-lg">{group.is_active ? 'Yes' : 'No'}</p>
-            </div>
-            {userDetails && (
-              <div className="p-4 bg-gray-100 rounded-lg">
-                <p className="font-semibold">Group Role</p>
-                <p className="text-lg">{userDetails.group_role}</p>
-              </div>
-            )}
-            {userDetails && (
-              <div className="p-4 bg-gray-100 rounded-lg">
-                <p className="font-semibold">Current Cash</p>
-                <p className="text-lg">${userDetails.current_cash.toFixed(2)}</p>
-              </div>
-            )}
+            <span className={`absolute top-4 right-4 text-lg font-bold ${getStatusColor(group)}`}>
+              {group.is_active ? 'Active' : (new Date(group.start_date) > new Date() ? 'Upcoming' : 'Inactive')}
+            </span>
           </div>
-          
         </div>
-    
       )}
-      <div >
-      {userDetails && <UserGroupDetailsComponent details={userDetails} handleGroupAction={confirmAction} />}
-
-      <Leaderboard users={users} group_name={group_name ? group_name : ""} showAdminControls={false} />
+      <div className="w-full max-w-4xl">
+        {userDetails && <UserGroupDetailsComponent details={userDetails} handleGroupAction={confirmAction} />}
       </div>
-      <div className="fixed bottom-4 right-4 flex space-x-2">
+      <div className="w-full max-w-4xl mt-4">
+        <Leaderboard users={users} group_name={group_name ? group_name : ""} showAdminControls={false} showTitle={true}/>
+      </div>
+      <div className="fixed bottom-4 right-4 flex space-x-4">
         {group && group.is_active && (
           <>
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
               onClick={() => handleNavigate(`/group/${group_name}/active`)}
             >
               Active Bets
             </button>
             <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
               onClick={() => handleNavigate(`/group/${group_name}/leagues`)}
             >
               Place Bet
@@ -156,23 +135,20 @@ const GroupHomePage: React.FC = () => {
         )}
         {group && startDate <= today && (
           <button
-            className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg"
             onClick={() => handleNavigate(`/group/${group_name}/settled`)}
           >
             Settled Bets
           </button>
         )}
       </div>
-  
-
-        <button
-          className="fixed bottom-4 left-4 bg-gray-800 text-white px-4 py-2 rounded shadow-lg"
-          onClick={() => handleNavigate('/my-groups')}
-        >
-          My Groups
-        </button> 
+      <button
+        className="fixed bottom-4 left-4 bg-gray-600 hover:bg-gray-500 text-white py-2 px-6 rounded-lg shadow-lg transition-all duration-300"
+        onClick={() => handleNavigate('/my-groups')}
+      >
+        My Groups
+      </button>
     </div>
-      
   );
 };
 
